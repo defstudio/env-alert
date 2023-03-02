@@ -63,11 +63,14 @@ final class ProductionRibbon
             }
 
             $emailPattern = Str::of($emailPattern);
-            if ($emailPattern->contains('*')) {
-                if (Str::of($user->email ?? '')->endsWith($emailPattern->afterLast('*'))) {
-                    return true;
-                }
+            if (! $emailPattern->contains('*')) {
+                continue;
             }
+            if (! Str::of($user->email ?? '')->endsWith($emailPattern->afterLast('*'))) {
+                continue;
+            }
+
+            return true;
         }
 
         return in_array(request()->ip(), Arr::wrap(config('production-ribbon.filters.ip', [])), true);
