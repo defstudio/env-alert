@@ -15,7 +15,7 @@ You can install the package via composer:
 composer require defstudio/production-ribbon
 ```
 
-You can publish the config file with:
+You should publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="production-ribbon-config"

@@ -27,10 +27,16 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+        config()->set('app.env', 'production');
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_production-ribbon_table.php.stub';
-        $migration->up();
-        */
+        config()->set('production-ribbon.filters.ip', [
+            '123.456.789.101',
+            '123.456.789.102',
+        ]);
+
+        config()->set('production-ribbon.filters.email', [
+            'email@email.test',
+            '*@pattern.com',
+        ]);
     }
 }

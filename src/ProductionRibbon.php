@@ -4,6 +4,8 @@ namespace DefStudio\ProductionRibbon;
 
 use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +15,16 @@ final class ProductionRibbon
     /** @var array<int, Closure> */
     private static array $filterUsing = [];
 
-    private static function filter(Closure $callback): ProductionRibbon
+    public static function filter(Closure $callback): ProductionRibbon
     {
         ProductionRibbon::$filterUsing[] = $callback;
+
+        return new ProductionRibbon;
+    }
+
+    public static function resetFilters(): ProductionRibbon
+    {
+        ProductionRibbon::$filterUsing = [];
 
         return new ProductionRibbon;
     }
@@ -32,15 +41,11 @@ final class ProductionRibbon
 
         $user = Auth::user();
 
-        if ($user === null) {
+        if (! $user instanceof User) {
             return false;
         }
 
-        if (! $this->isUserEnabled($user)) {
-            return false;
-        }
-
-        return true;
+        return $this->isUserEnabled($user);
     }
 
     private function isUserEnabled(Authenticatable $user): bool
@@ -51,34 +56,21 @@ final class ProductionRibbon
             }
         }
 
-        if (property_exists($user, 'email')) {
-            foreach (config('production-ribbon.filters.email', []) as $emailPattern) {
-                $emailPattern = Str::of($emailPattern);
-                if ($emailPattern->contains('*')) {
-                    if (Str::of($user->email)->endsWith($emailPattern->afterLast('*'))) {
-                        return true;
-                    }
-                }
+        foreach (Arr::wrap(config('production-ribbon.filters.email', [])) as $emailPattern) {
+            /** @phpstan-ignore-next-line */
+            if ($user->email === $emailPattern) {
+                return true;
+            }
 
-                if ($user->email === $emailPattern->toString()) {
+            $emailPattern = Str::of($emailPattern);
+            if ($emailPattern->contains('*')) {
+                if (Str::of($user->email ?? '')->endsWith($emailPattern->afterLast('*'))) {
                     return true;
                 }
             }
         }
 
-        foreach (config('production-ribbon.filters.username', []) as $username) {
-            if ($user->getAuthIdentifier() === $username) {
-                return true;
-            }
-        }
-
-        foreach (config('production-ribbon.filters.ip', []) as $ip) {
-            if (request()->ip() === $ip) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array(request()->ip(), Arr::wrap(config('production-ribbon.filters.ip', [])), true);
     }
 
     public function inject(mixed $response)
@@ -95,24 +87,26 @@ final class ProductionRibbon
 
         if ($headEnd = mb_strpos($content, '</head>')) {
             $styles = file_get_contents(__DIR__.'/../resources/css/styles.css');
+
             $content = Str::of(mb_substr($content, 0, $headEnd))
                 ->append("<style>\n$styles\n</style>")
                 ->append(mb_substr($content, $headEnd))
                 ->toString();
-        }
 
-        if ($bodyEnd = mb_strpos($content, '</head>')) {
-            $content = Str::of(mb_substr($content, 0, $bodyEnd))
-                ->append(
-                    <<<HTML
-                    <div id="production-ribbon">{$this->environment()}</div>
+            if ($bodyEnd = mb_strpos($content, '</body>')) {
+                $position = config('production-ribbon.position', 'left');
+
+                $content = Str::of(mb_substr($content, 0, $bodyEnd))
+                    ->append(<<<HTML
+                        <div id="production-ribbon" class="$position">&nbsp;&nbsp;&nbsp;{$this->environment()}&nbsp;&nbsp;&nbsp;</div>
                     HTML
-                )
-                ->append(mb_substr($content, $bodyEnd))
-                ->toString();
-        }
+                    )
+                    ->append(mb_substr($content, $bodyEnd))
+                    ->toString();
+            }
 
-        $response->setContent($content);
+            $response->setContent($content);
+        }
 
         return $response;
     }

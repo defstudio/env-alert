@@ -31,12 +31,13 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "rector/rector": "^0.15.19",
+        "spatie/laravel-ray": "^1.26",
+        "spatie/pest-plugin-snapshots": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "DefStudio\\ProductionRibbon\\": "src",
-            "DefStudio\\ProductionRibbon\\Database\\Factories\\": "database/factories"
+            "DefStudio\\ProductionRibbon\\": "src"
         }
     },
     "autoload-dev": {
@@ -46,10 +47,19 @@
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "lint": "vendor/bin/pint"
+        "lint": "vendor/bin/pint",
+        "refactor": "vendor/bin/rector",
+        "test": "vendor/bin/pest --colors=always",
+        "test:refactor": "@refactor --dry-run",
+        "test:lint": "@lint -v --test",
+        "test:types": "vendor/bin/phpstan analyse --ansi --memory-limit=-1",
+        "test:coverage": "vendor/bin/pest --coverage",
+        "test:all": [
+            "@test:lint",
+            "@test:types",
+            "@test:refactor",
+            "@test"
+        ]
     },
     "config": {
         "sort-packages": true,
