@@ -25,7 +25,7 @@ This is the contents of the published config file:
 
 ```php
 return [
-    'enabled' => !!env('PRODUCTION_RIBBON_ENABLED', true),
+    'enabled' => (bool) env('PRODUCTION_RIBBON_ENABLED', true),
 
     /*
      * Environments where to show the ribbon alert
@@ -33,21 +33,27 @@ return [
     'environments' => ['production'],
 
     /*
-     * When to display the ribbon alert
+     * When to display the ribbon alert.
      */
-    'users' => [
-        'emails' => ['your.email@email.test', '*@your.company.com'],
-        'usernames' => ['administrator'],
-        'ip' => ['123.456.789.101'],
-    ]
+    'filters' => [
+        'email' => [
+            // 'your.email@email.test',
+            // '*@your.company.com'
+        ],
+        'ip' => [
+            // '123.456.789.101'
+        ],
+    ],
+
+    /*
+     * The position of the ribbon alert.
+     * Accepted values: left/right
+     */
+    'position' => 'right',
 ];
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="production-ribbon-views"
-```
+That's all, a red ribbon on the top right corner of the screen will warn when you are operating in a production environment!
 
 ## Testing
 

@@ -25,5 +25,5 @@ return [
      * The position of the ribbon alert.
      * Accepted values: left/right
      */
-    'position' => 'left',
+    'position' => 'right',
 ];
