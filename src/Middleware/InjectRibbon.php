@@ -11,10 +11,9 @@ class InjectRibbon
     {
     }
 
-
     public function handle($request, Closure $next): mixed
     {
-        if(!$this->ribbon->isActive()){
+        if (! $this->ribbon->isActive()) {
             return $next($request);
         }
 

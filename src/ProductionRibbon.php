@@ -13,11 +13,6 @@ final class ProductionRibbon
     /** @var array<int, Closure> */
     private static array $filterUsing = [];
 
-    /**
-     * @param Closure $callback
-     *
-     * @return ProductionRibbon
-     */
     private static function filter(Closure $callback): ProductionRibbon
     {
         ProductionRibbon::$filterUsing[] = $callback;
@@ -27,11 +22,11 @@ final class ProductionRibbon
 
     public function isActive(): bool
     {
-        if (!config('production-ribbon.enabled', true)) {
+        if (! config('production-ribbon.enabled', true)) {
             return false;
         }
 
-        if (!in_array($this->environment(), config('production-ribbon.environments'))) {
+        if (! in_array($this->environment(), config('production-ribbon.environments'))) {
             return false;
         }
 
@@ -41,7 +36,7 @@ final class ProductionRibbon
             return false;
         }
 
-        if (!$this->isUserEnabled($user)) {
+        if (! $this->isUserEnabled($user)) {
             return false;
         }
 
@@ -71,7 +66,6 @@ final class ProductionRibbon
             }
         }
 
-
         foreach (config('production-ribbon.filters.username', []) as $username) {
             if ($user->getAuthIdentifier() === $username) {
                 return true;
@@ -89,7 +83,7 @@ final class ProductionRibbon
 
     public function inject(mixed $response)
     {
-        if (!$response instanceof Response) {
+        if (! $response instanceof Response) {
             return $response;
         }
 
@@ -100,7 +94,7 @@ final class ProductionRibbon
         }
 
         if ($headEnd = mb_strpos($content, '</head>')) {
-            $styles = file_get_contents(__DIR__."/../resources/css/styles.css");
+            $styles = file_get_contents(__DIR__.'/../resources/css/styles.css');
             $content = Str::of(mb_substr($content, 0, $headEnd))
                 ->append("<style>\n$styles\n</style>")
                 ->append(mb_substr($content, $headEnd))

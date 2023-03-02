@@ -2,9 +2,9 @@
 
 namespace DefStudio\ProductionRibbon\Tests;
 
+use DefStudio\ProductionRibbon\ProductionRibbonServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use DefStudio\ProductionRibbon\ProductionRibbonServiceProvider;
 
 class TestCase extends Orchestra
 {

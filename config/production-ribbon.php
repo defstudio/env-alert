@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'enabled' => !!env('PRODUCTION_RIBBON_ENABLED', true),
+    'enabled' => (bool) env('PRODUCTION_RIBBON_ENABLED', true),
 
     /*
      * Environments where to show the ribbon alert
@@ -15,5 +15,5 @@ return [
         'email' => ['your.email@email.test', '*@your.company.com'],
         'username' => ['administrator'],
         'ip' => ['123.456.789.101'],
-    ]
+    ],
 ];
