@@ -76,16 +76,26 @@ it('can inject the ribbon', function () {
 
     $ribbon = new ProductionRibbon();
 
-    expect($ribbon->inject(fakeResponse())->getContent())
-        ->toMatchHtmlSnapshot();
+    expect(explode("\n", $ribbon->inject(fakeResponse())->getContent()))
+        ->toMatchSnapshot();
 });
 
-it('can inject the ribbon to the right', function () {
-    config()->set('production-ribbon.position', 'left');
+it('can inject the ribbon to the left', function () {
     fakeUser();
+    config()->set('production-ribbon.position', 'left');
 
     $ribbon = new ProductionRibbon();
 
-    expect($ribbon->inject(fakeResponse())->getContent())
-        ->toMatchHtmlSnapshot();
+    expect(explode("\n", $ribbon->inject(fakeResponse())->getContent()))
+        ->toMatchSnapshot();
+});
+
+it('can inject the ribbon to the right', function () {
+    fakeUser();
+    config()->set('production-ribbon.position', 'right');
+
+    $ribbon = new ProductionRibbon();
+
+    expect(explode("\n", $ribbon->inject(fakeResponse())->getContent()))
+        ->toMatchSnapshot();
 });
