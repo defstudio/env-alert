@@ -20,6 +20,13 @@ it('can be activated for any environment', function () {
     expect($ribbon->isActive())->toBeFalse();
 });
 
+test('a custom environment can be set', function () {
+    config()->set('production-ribbon.current_environment', 'foo');
+    config()->set('production-ribbon.environments', ['foo']);
+    $ribbon = new ProductionRibbon();
+    expect($ribbon->isActive())->toBeFalse();
+});
+
 it('is not active for a guest user', function () {
     $ribbon = new ProductionRibbon();
 
