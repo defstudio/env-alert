@@ -81,7 +81,7 @@ it('can inject the ribbon', function () {
 });
 
 it('can inject the ribbon to the right', function () {
-    config()->set('production-ribbon.position', 'right');
+    config()->set('production-ribbon.position', 'left');
     fakeUser();
 
     $ribbon = new ProductionRibbon();

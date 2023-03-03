@@ -59,7 +59,8 @@
             "@test:types",
             "@test:refactor",
             "@test"
-        ]
+        ],
+        "update:snapshots": "vendor/bin/pest --colors=always -d --update-snapshots"
     },
     "config": {
         "sort-packages": true,
