@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/defstudio/production-ribbon/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/defstudio/production-ribbon/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/defstudio/production-ribbon.svg?style=flat-square)](https://packagist.org/packages/defstudio/production-ribbon)
 
-Show a nice red alert ribbon when **you** are in a production environment
+Show a nice red alert ribbon when **you** (and only you) are in a production environment
 
 ![image](https://user-images.githubusercontent.com/8792274/222460043-dc3e3297-2c59-4d78-9092-feb01efa22bf.png)
 
