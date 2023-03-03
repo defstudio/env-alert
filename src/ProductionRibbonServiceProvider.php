@@ -15,8 +15,7 @@ final class ProductionRibbonServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('production-ribbon')
-            ->hasConfigFile()
-            ->hasViews();
+            ->hasConfigFile();
     }
 
     public function packageRegistered(): void
