@@ -116,6 +116,6 @@ final class ProductionRibbon
 
     private function environment(): string
     {
-        return config('app.env');
+        return config('production-ribbon.current_environment', config('app.env'));
     }
 }

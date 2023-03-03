@@ -4,6 +4,11 @@ return [
     'enabled' => (bool) env('PRODUCTION_RIBBON_ENABLED', true),
 
     /*
+     * Current environment, tanke from APP_ENV or PRODUCTION_RIBBON_ENV .env entries
+     */
+    'current_environment' => env('PRODUCTION_RIBBON_ENV', env('APP_ENV', 'production')),
+
+    /*
      * Environments where to show the ribbon alert
      */
     'environments' => ['production'],
