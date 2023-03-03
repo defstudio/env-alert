@@ -9,7 +9,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class ProductionRibbonServiceProvider extends PackageServiceProvider
+final class ProductionRibbonServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -19,7 +19,7 @@ class ProductionRibbonServiceProvider extends PackageServiceProvider
             ->hasViews();
     }
 
-    public function packageRegistered()
+    public function packageRegistered(): void
     {
         $kernel = $this->app->make(Kernel::class);
         $kernel->pushMiddleware(InjectRibbon::class);
