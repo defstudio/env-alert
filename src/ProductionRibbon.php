@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedFieldInspection */
 
 namespace DefStudio\ProductionRibbon;
 
@@ -10,12 +11,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ProductionRibbon
+class ProductionRibbon
 {
-    /** @var array<int, Closure> */
-    private static array $filterUsing = [];
+    /** @var array<int, callable(Authenticatable|null $user): bool> */
+    protected static array $filterUsing = [];
 
-    public static function filter(Closure $callback): ProductionRibbon
+    /**
+     * @param callable(Authenticatable|null $user): bool $callback
+     *
+     * @return ProductionRibbon
+     */
+    public static function filter(callable $callback): ProductionRibbon
     {
         ProductionRibbon::$filterUsing[] = $callback;
 
@@ -31,54 +37,35 @@ final class ProductionRibbon
 
     public function isActive(): bool
     {
-        if (! config('production-ribbon.enabled', true)) {
+        if (!$this->isEnabled()) {
             return false;
         }
 
-        if (! in_array($this->environment(), config('production-ribbon.environments'))) {
+        if (!$this->isEnvironmentEnabled()) {
             return false;
         }
 
-        $user = Auth::user();
-
-        if (! $user instanceof User) {
-            return false;
-        }
-
-        return $this->isUserEnabled($user);
-    }
-
-    private function isUserEnabled(Authenticatable $user): bool
-    {
-        foreach (ProductionRibbon::$filterUsing as $filter) {
-            if ($filter($user)) {
-                return true;
-            }
-        }
-
-        foreach (Arr::wrap(config('production-ribbon.filters.email', [])) as $emailPattern) {
-            /** @phpstan-ignore-next-line */
-            if ($user->email === $emailPattern) {
-                return true;
-            }
-
-            $emailPattern = Str::of($emailPattern);
-            if (! $emailPattern->contains('*')) {
-                continue;
-            }
-            if (! Str::of($user->email ?? '')->endsWith($emailPattern->afterLast('*'))) {
-                continue;
-            }
-
+        if ($this->isEnabledByIp()) {
             return true;
         }
 
-        return in_array(request()->ip(), Arr::wrap(config('production-ribbon.filters.ip', [])), true);
+        $user = $this->getCurrentUser();
+
+        if ($this->isEnabledByCustomFilters($user)) {
+            return true;
+        }
+
+        if ($user !== null && $this->isEnabledByEmail($user->email)) {
+            return true;
+        }
+
+        return false;
     }
+
 
     public function inject(mixed $response)
     {
-        if (! $response instanceof Response) {
+        if (!$response instanceof Response) {
             return $response;
         }
 
@@ -97,7 +84,7 @@ final class ProductionRibbon
                 ->toString();
 
             if ($bodyEnd = mb_strpos($content, '</body>')) {
-                $position = config('production-ribbon.position', 'left');
+                $position = $this->getConfig('style.position', 'left');
 
                 $content = Str::of(mb_substr($content, 0, $bodyEnd))
                     ->append(<<<HTML
@@ -114,8 +101,73 @@ final class ProductionRibbon
         return $response;
     }
 
-    private function environment(): string
+    protected function environment(): string
     {
         return config('production-ribbon.current_environment', config('app.env'));
     }
+
+    protected function getCurrentUser(): Authenticatable|null
+    {
+        return Auth::user();
+    }
+
+    protected function isEnabled(): bool
+    {
+        return (boolean) $this->getConfig('enabled', true);
+    }
+
+    protected function isEnvironmentEnabled(): bool
+    {
+        $environments = $this->getConfig('environments', []);
+
+        if (Arr::isAssoc($environments)) {
+            $environments = array_keys($environments);
+        }
+
+        return in_array($this->environment(), $environments);
+    }
+
+    protected function isEnabledByCustomFilters(Authenticatable|null $user): bool
+    {
+        foreach (ProductionRibbon::$filterUsing as $filter) {
+            if ($filter($user)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected function isEnabledByEmail(string $email): bool
+    {
+        foreach (Arr::wrap($this->getConfig('filters.email', [])) as $emailPattern) {
+            if ($email === $emailPattern) {
+                return true;
+            }
+
+            $emailPattern = Str::of($emailPattern);
+            if (!$emailPattern->contains('*')) {
+                continue;
+            }
+            if (!Str::of($email)->endsWith($emailPattern->afterLast('*'))) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function isEnabledByIp(): bool
+    {
+        return in_array(request()->ip(), Arr::wrap($this->getConfig('filters.ip', [])), true);
+    }
+
+    protected function getConfig(string $key, mixed $default): mixed
+    {
+        return config(
+            'production-ribbon.environments.' . $this->environment() . ".$key",
+            config("production-ribbon.$key", $default));
+    }
+
 }

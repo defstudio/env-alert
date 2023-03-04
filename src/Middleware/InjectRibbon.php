@@ -7,8 +7,12 @@ use DefStudio\ProductionRibbon\ProductionRibbon;
 
 final class InjectRibbon
 {
-    public function __construct(private readonly ProductionRibbon $ribbon)
+    private ProductionRibbon $ribbon;
+
+    public function __construct()
     {
+        $ribbonClass = config('production-ribbon.service_class');
+        $this->ribbon = app($ribbonClass);
     }
 
     public function handle($request, Closure $next): mixed
