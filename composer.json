@@ -1,12 +1,12 @@
 {
-    "name": "defstudio/production-ribbon",
+    "name": "defstudio/env-alert",
     "description": "Show a nice red alert ribbon when your user is in a production environment",
     "keywords": [
         "defstudio",
         "laravel",
-        "production-ribbon"
+        "env-alert"
     ],
-    "homepage": "https://github.com/defstudio/production-ribbon",
+    "homepage": "https://github.com/defstudio/env-alert",
     "license": "MIT",
     "authors": [
         {
@@ -18,7 +18,8 @@
     "require": {
         "php": "^8.1",
         "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0"
+        "illuminate/contracts": "^10.0",
+        "illuminate/support": "^v10.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -37,19 +38,19 @@
     },
     "autoload": {
         "psr-4": {
-            "DefStudio\\ProductionRibbon\\": "src"
+            "DefStudio\\EnvAlert\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DefStudio\\ProductionRibbon\\Tests\\": "tests"
+            "DefStudio\\EnvAlert\\Tests\\": "tests"
         }
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
         "lint": "vendor/bin/pint",
         "refactor": "vendor/bin/rector",
-        "test": "vendor/bin/pest --colors=always",
+        "test": "vendor/bin/pest --colors=always ",
         "test:refactor": "@refactor --dry-run",
         "test:lint": "@lint -v --test",
         "test:types": "vendor/bin/phpstan analyse --ansi --memory-limit=-1",
@@ -72,11 +73,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "DefStudio\\ProductionRibbon\\ProductionRibbonServiceProvider"
-            ],
-            "aliases": {
-                "ProductionRibbon": "DefStudio\\ProductionRibbon\\Facades\\ProductionRibbon"
-            }
+                "DefStudio\\EnvAlert\\EnvAlertServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

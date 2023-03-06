@@ -1,6 +1,6 @@
 <?php
 
-namespace DefStudio\ProductionRibbon\Tests\Support\Models;
+namespace DefStudio\EnvAlert\Tests\Support\Models;
 
 /**
  * @method static User create(array $array)
