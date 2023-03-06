@@ -1,21 +1,22 @@
 <?php
 
-namespace DefStudio\ProductionRibbon\Middleware;
+namespace DefStudio\EnvAlert\Middleware;
 
 use Closure;
-use DefStudio\ProductionRibbon\ProductionRibbon;
+use DefStudio\EnvAlert\RibbonService;
 
 final class InjectRibbon
 {
-    private ProductionRibbon $ribbon;
+    private readonly RibbonService $ribbon;
 
     public function __construct()
     {
-        $ribbonClass = config('production-ribbon.service_class');
+        /** @var class-string<RibbonService> $ribbonClass */
+        $ribbonClass = config('env-alert.service_class');
         $this->ribbon = app($ribbonClass);
     }
 
-    public function handle($request, Closure $next): mixed
+    public function handle(mixed $request, Closure $next): mixed
     {
         $response = $next($request);
 

@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'enabled' => (bool) env('PRODUCTION_RIBBON_ENABLED', true),
+    'enabled' => (bool) env('ENV_ALERT_ENABLED', true),
 
     /*
-     * Current environment, taken from APP_ENV or PRODUCTION_RIBBON_ENV .env entries
+     * Current environment, taken from APP_ENV or ENV_ALERT_ENV .env entries
      */
-    'current_environment' => env('PRODUCTION_RIBBON_ENV', env('APP_ENV', 'production')),
+    'current_environment' => env('ENV_ALERT_ENV', env('APP_ENV', 'production')),
 
     /*
      * Environments where to show the ribbon alert
@@ -31,11 +31,11 @@ return [
              */
             'style' => [
                 'position' => 'right',
-                'background_color' => '#D70040',
-                'text_color' => '#D70040',
+                'background_color' => '#f30b0b',
+                'text_color' => '#ffffff',
             ],
         ],
     ],
 
-    'service_class' => \DefStudio\ProductionRibbon\ProductionRibbon::class
+    'service_class' => \DefStudio\EnvAlert\RibbonService::class,
 ];

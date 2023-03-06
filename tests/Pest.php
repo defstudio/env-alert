@@ -1,7 +1,7 @@
 <?php
 
-use DefStudio\ProductionRibbon\Tests\Support\Models\User;
-use DefStudio\ProductionRibbon\Tests\TestCase;
+use DefStudio\EnvAlert\Tests\Support\Models\User;
+use DefStudio\EnvAlert\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use function Pest\Laravel\actingAs;

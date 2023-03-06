@@ -1,47 +1,44 @@
 <?php
+
 /** @noinspection PhpUndefinedFieldInspection */
 
-namespace DefStudio\ProductionRibbon;
+namespace DefStudio\EnvAlert;
 
-use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductionRibbon
+class RibbonService
 {
-    /** @var array<int, callable(Authenticatable|null $user): bool> */
+    /** @var array<int, callable(Authenticatable|null): bool> */
     protected static array $filterUsing = [];
 
     /**
      * @param callable(Authenticatable|null $user): bool $callback
-     *
-     * @return ProductionRibbon
      */
-    public static function filter(callable $callback): ProductionRibbon
+    public static function filter(callable $callback): RibbonService
     {
-        ProductionRibbon::$filterUsing[] = $callback;
+        RibbonService::$filterUsing[] = $callback;
 
-        return new ProductionRibbon;
+        return new RibbonService;
     }
 
-    public static function resetFilters(): ProductionRibbon
+    public static function resetFilters(): RibbonService
     {
-        ProductionRibbon::$filterUsing = [];
+        RibbonService::$filterUsing = [];
 
-        return new ProductionRibbon;
+        return new RibbonService;
     }
 
     public function isActive(): bool
     {
-        if (!$this->isEnabled()) {
+        if (! $this->isEnabled()) {
             return false;
         }
 
-        if (!$this->isEnvironmentEnabled()) {
+        if (! $this->isEnvironmentEnabled()) {
             return false;
         }
 
@@ -55,17 +52,19 @@ class ProductionRibbon
             return true;
         }
 
-        if ($user !== null && $this->isEnabledByEmail($user->email)) {
-            return true;
-        }
-
-        return false;
+        /** @phpstan-ignore-next-line  */
+        return $user instanceof Authenticatable && $this->isEnabledByEmail($user->email);
     }
 
-
+    /**
+     * @template TResponse
+     *
+     * @param  TResponse  $response
+     * @return TResponse
+     */
     public function inject(mixed $response)
     {
-        if (!$response instanceof Response) {
+        if (! $response instanceof Response) {
             return $response;
         }
 
@@ -84,13 +83,13 @@ class ProductionRibbon
                 ->toString();
 
             if ($bodyEnd = mb_strpos($content, '</body>')) {
-                $position = $this->getConfig('style.position', 'left');
-
                 $content = Str::of(mb_substr($content, 0, $bodyEnd))
-                    ->append(<<<HTML
-                        <div id="production-ribbon" class="$position">&nbsp;&nbsp;&nbsp;{$this->environment()}&nbsp;&nbsp;&nbsp;</div>
-                    HTML
-                    )
+                    ->append(view('ribbon::ribbon', [
+                        'position' => $this->getConfig('style.position', 'left'),
+                        'bgColor' => $this->getConfig('style.background_color', '#f30b0b'),
+                        'textColor' => $this->getConfig('style.text_color', '#ffffff'),
+                        'text' => $this->getConfig('text', $this->environment()),
+                    ])->render())
                     ->append(mb_substr($content, $bodyEnd))
                     ->toString();
             }
@@ -103,7 +102,10 @@ class ProductionRibbon
 
     protected function environment(): string
     {
-        return config('production-ribbon.current_environment', config('app.env'));
+        $env = config('env-alert.current_environment', config('app.env'));
+        assert(is_string($env));
+
+        return $env;
     }
 
     protected function getCurrentUser(): Authenticatable|null
@@ -113,13 +115,14 @@ class ProductionRibbon
 
     protected function isEnabled(): bool
     {
-        return (boolean) $this->getConfig('enabled', true);
+        return (bool) $this->getConfig('enabled', true);
     }
 
     protected function isEnvironmentEnabled(): bool
     {
         $environments = $this->getConfig('environments', []);
 
+        assert(is_array($environments));
         if (Arr::isAssoc($environments)) {
             $environments = array_keys($environments);
         }
@@ -129,11 +132,12 @@ class ProductionRibbon
 
     protected function isEnabledByCustomFilters(Authenticatable|null $user): bool
     {
-        foreach (ProductionRibbon::$filterUsing as $filter) {
+        foreach (RibbonService::$filterUsing as $filter) {
             if ($filter($user)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -145,10 +149,10 @@ class ProductionRibbon
             }
 
             $emailPattern = Str::of($emailPattern);
-            if (!$emailPattern->contains('*')) {
+            if (! $emailPattern->contains('*')) {
                 continue;
             }
-            if (!Str::of($email)->endsWith($emailPattern->afterLast('*'))) {
+            if (! Str::of($email)->endsWith($emailPattern->afterLast('*'))) {
                 continue;
             }
 
@@ -163,11 +167,10 @@ class ProductionRibbon
         return in_array(request()->ip(), Arr::wrap($this->getConfig('filters.ip', [])), true);
     }
 
-    protected function getConfig(string $key, mixed $default): mixed
+    protected function getConfig(string $key, mixed $default = null): mixed
     {
         return config(
-            'production-ribbon.environments.' . $this->environment() . ".$key",
-            config("production-ribbon.$key", $default));
+            'env-alert.environments.'.$this->environment().".$key",
+            config("env-alert.$key", $default));
     }
-
 }

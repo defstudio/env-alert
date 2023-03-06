@@ -2,20 +2,21 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace DefStudio\ProductionRibbon;
+namespace DefStudio\EnvAlert;
 
-use DefStudio\ProductionRibbon\Middleware\InjectRibbon;
+use DefStudio\EnvAlert\Middleware\InjectRibbon;
 use Illuminate\Contracts\Http\Kernel;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-final class ProductionRibbonServiceProvider extends PackageServiceProvider
+final class EnvAlertServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('production-ribbon')
-            ->hasConfigFile();
+            ->name('env-alert')
+            ->hasConfigFile()
+            ->hasViews('ribbon');
     }
 
     public function packageRegistered(): void

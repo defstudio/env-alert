@@ -1,8 +1,8 @@
 <?php
 
-namespace DefStudio\ProductionRibbon\Tests;
+namespace DefStudio\EnvAlert\Tests;
 
-use DefStudio\ProductionRibbon\ProductionRibbonServiceProvider;
+use DefStudio\EnvAlert\EnvAlertServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'DefStudio\\ProductionRibbon\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'DefStudio\\EnvAlert\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            ProductionRibbonServiceProvider::class,
+            EnvAlertServiceProvider::class,
         ];
     }
 
@@ -29,14 +29,19 @@ class TestCase extends Orchestra
         config()->set('database.default', 'testing');
         config()->set('app.env', 'production');
 
-        config()->set('production-ribbon.filters.ip', [
-            '123.456.789.101',
-            '123.456.789.102',
-        ]);
-
-        config()->set('production-ribbon.filters.email', [
-            'email@email.test',
-            '*@pattern.com',
+        config()->set('env-alert.environments', [
+            'production' => [
+                'filters' => [
+                    'email' => [
+                        'email@email.test',
+                        '*@pattern.com',
+                    ],
+                    'ip' => [
+                        '123.456.789.101',
+                        '123.456.789.102',
+                    ],
+                ],
+            ],
         ]);
     }
 }

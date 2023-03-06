@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Fake Page</title>
+    <style>
+#env-alert{
+    font-weight: bold;
+    text-transform: uppercase;
+    pointer-events: none;
+
+    position: fixed;
+
+    clip-path: inset(0 -100%);
+}
+
+#env-alert.left
+{
+    inset: 0 auto auto 0;
+    transform-origin: 100% 0;
+    transform: translate(-29.3%) rotate(-45deg);
+}
+
+#env-alert.right
+{
+    inset: 0 0 auto auto;
+    transform-origin: 0 0;
+    transform: translate(29.3%) rotate(45deg);
+}
+
+
+</style>
+</head>
+    <body>
+        <div>content</div>
+    <div id="env-alert" class="right" style="color: #ffffff; background: #f30b0b; box-shadow: 0 0 0 999px #f30b0b;">&nbsp;&nbsp;&nbsp;production&nbsp;&nbsp;&nbsp;</div>
+</body>
+</html>
