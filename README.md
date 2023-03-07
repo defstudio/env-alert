@@ -83,7 +83,7 @@ return [
         ],
     ],
 
-    'service_class' => \DefStudio\EnvAlert\RibbonService::class,
+    'service_class' => \DefStudio\EnvAlert\AlertService::class,
 ];
 ```
 
