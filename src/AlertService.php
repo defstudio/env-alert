@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
-class RibbonService
+class AlertService
 {
     /** @var array<int, callable(Authenticatable|null): bool> */
     protected static array $filterUsing = [];
@@ -18,18 +18,18 @@ class RibbonService
     /**
      * @param callable(Authenticatable|null $user): bool $callback
      */
-    public static function filter(callable $callback): RibbonService
+    public static function filter(callable $callback): AlertService
     {
-        RibbonService::$filterUsing[] = $callback;
+        AlertService::$filterUsing[] = $callback;
 
-        return new RibbonService;
+        return new AlertService;
     }
 
-    public static function resetFilters(): RibbonService
+    public static function resetFilters(): AlertService
     {
-        RibbonService::$filterUsing = [];
+        AlertService::$filterUsing = [];
 
-        return new RibbonService;
+        return new AlertService;
     }
 
     public function isActive(): bool
@@ -132,7 +132,7 @@ class RibbonService
 
     protected function isEnabledByCustomFilters(Authenticatable|null $user): bool
     {
-        foreach (RibbonService::$filterUsing as $filter) {
+        foreach (AlertService::$filterUsing as $filter) {
             if ($filter($user)) {
                 return true;
             }

@@ -3,15 +3,15 @@
 namespace DefStudio\EnvAlert\Middleware;
 
 use Closure;
-use DefStudio\EnvAlert\RibbonService;
+use DefStudio\EnvAlert\AlertService;
 
-final class InjectRibbon
+final class InjectEnvAlert
 {
-    private readonly RibbonService $ribbon;
+    private readonly AlertService $ribbon;
 
     public function __construct()
     {
-        /** @var class-string<RibbonService> $ribbonClass */
+        /** @var class-string<AlertService> $ribbonClass */
         $ribbonClass = config('env-alert.service_class');
         $this->ribbon = app($ribbonClass);
     }
