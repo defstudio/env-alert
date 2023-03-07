@@ -2,6 +2,14 @@
 
 All notable changes to `env-alert` will be documented in this file.
 
+## v1.1.1 - 2023-03-07
+
+### What's Changed
+
+- Refactor by @fabio-ivona in https://github.com/defstudio/env-alert/pull/4
+
+**Full Changelog**: https://github.com/defstudio/env-alert/compare/v1.1.0...v1.1.1
+
 ## v1.0.3 - 2023-03-03
 
 ### What's Changed
