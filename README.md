@@ -1,4 +1,4 @@
-# Environment Ribbon
+# Environment Alert
 
 <a href="https://packagist.org/packages/defstudio/env-alert" target="_blank">
     <img style="display: inline-block; margin-top: 0.5em; margin-bottom: 0.5em" src="https://img.shields.io/packagist/v/defstudio/env-alert.svg?style=flat&cacheSeconds=3600" alt="Latest Version on Packagist">
