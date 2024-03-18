@@ -6,6 +6,8 @@
     position: fixed;
 
     clip-path: inset(0 -100%);
+
+    z-index: 9999;
 }
 
 #env-alert.left
