@@ -2,6 +2,31 @@
 
 All notable changes to `env-alert` will be documented in this file.
 
+## v1.2.1 - 2026-01-13
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/14
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/15
+* Bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/16
+* Bump dependabot/fetch-metadata from 2.1.0 to 2.2.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/17
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/18
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/19
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/20
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/21
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/22
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/23
+* Bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/24
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/25
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/26
+* support php 8.5 by @MarioGattolla in https://github.com/defstudio/env-alert/pull/27
+
+### New Contributors
+
+* @MarioGattolla made their first contribution in https://github.com/defstudio/env-alert/pull/27
+
+**Full Changelog**: https://github.com/defstudio/env-alert/compare/v1.2.0...v1.2.1
+
 ## v1.2.0 - 2024-03-20
 
 **Full Changelog**: https://github.com/defstudio/env-alert/compare/v1.1.2...v1.2.0
