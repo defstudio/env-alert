@@ -56,4 +56,4 @@ jobs:
         run: composer show -D
 
       - name: Execute tests
-        run: vendor/bin/pest -vv --ci
+        run: vendor/bin/pest --no-coverage -vv --ci
