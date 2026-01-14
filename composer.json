@@ -30,8 +30,8 @@
         "pestphp/pest-plugin-arch": "^3.0 | ^4.1",
         "pestphp/pest-plugin-laravel": "^3.0 | ^4.0",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^2.0",
-        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0.0",
+        "phpstan/phpstan-phpunit": "^2.0.0",
         "rector/rector": "^2",
         "spatie/laravel-ray": "^1.43.3",
         "spatie/pest-plugin-snapshots": "^2.0"
