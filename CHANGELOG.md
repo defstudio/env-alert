@@ -2,6 +2,14 @@
 
 All notable changes to `env-alert` will be documented in this file.
 
+## v1.2.2 - 2026-01-15
+
+### What's Changed
+
+* Support php 8.5 by @MarioGattolla in https://github.com/defstudio/env-alert/pull/28
+
+**Full Changelog**: https://github.com/defstudio/env-alert/compare/v1.2.1...v1.2.2
+
 ## v1.2.1 - 2026-01-13
 
 ### What's Changed
