@@ -2,6 +2,17 @@
 
 All notable changes to `env-alert` will be documented in this file.
 
+## v1.2.3 - 2026-10-07
+
+### What's Changed
+
+* Bump ramsey/composer-install from 3 to 4 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/29
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/30
+* Bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/31
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/defstudio/env-alert/pull/32
+
+**Full Changelog**: https://github.com/defstudio/env-alert/compare/v1.2.2...v1.2.3
+
 ## v1.2.2 - 2026-01-15
 
 ### What's Changed
