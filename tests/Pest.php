@@ -4,13 +4,14 @@ use DefStudio\EnvAlert\Tests\Support\Models\User;
 use DefStudio\EnvAlert\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
 use function Pest\Laravel\actingAs;
 
 uses(TestCase::class)->in(__DIR__);
 
 function fakeUser(string $email = 'email@email.test', string $ip = '123.456.789.101'): User
 {
-    $user = new User();
+    $user = new User;
     $user->email = $email;
 
     actingAs($user);
@@ -39,7 +40,7 @@ function fakeUser(string $email = 'email@email.test', string $ip = '123.456.789.
 
 function fakeResponse(): Response
 {
-    $response = new Response();
+    $response = new Response;
     $response->setContent(<<<'HTML'
             <html>
                 <head>

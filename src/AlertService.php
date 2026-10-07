@@ -16,7 +16,7 @@ class AlertService
     protected static array $filterUsing = [];
 
     /**
-     * @param callable(Authenticatable|null $user): bool $callback
+     * @param  callable(Authenticatable|null $user): bool  $callback
      */
     public static function filter(callable $callback): AlertService
     {
@@ -108,7 +108,7 @@ class AlertService
         return $env;
     }
 
-    protected function getCurrentUser(): Authenticatable|null
+    protected function getCurrentUser(): ?Authenticatable
     {
         return Auth::user();
     }
@@ -130,7 +130,7 @@ class AlertService
         return in_array($this->environment(), $environments);
     }
 
-    protected function isEnabledByCustomFilters(Authenticatable|null $user): bool
+    protected function isEnabledByCustomFilters(?Authenticatable $user): bool
     {
         foreach (AlertService::$filterUsing as $filter) {
             if ($filter($user)) {

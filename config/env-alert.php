@@ -1,5 +1,7 @@
 <?php
 
+use DefStudio\EnvAlert\AlertService;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -69,5 +71,5 @@ return [
     |
     */
 
-    'service_class' => \DefStudio\EnvAlert\AlertService::class,
+    'service_class' => AlertService::class,
 ];
