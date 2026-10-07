@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'current_environment' => env('ENV_ALERT_CURRENT_ENV', env('APP_ENV', 'production')),
+    'current_environment' => env('ENV_ALERT_CURRENT_ENV', env('TEST', false) ? 'staging' : env('APP_ENV', 'production')),
 
     /*
     |--------------------------------------------------------------------------
