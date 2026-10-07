@@ -2,6 +2,10 @@
 
 All notable changes to `env-alert` will be documented in this file.
 
+## v1.2.4 - 2026-10-07
+
+**Full Changelog**: https://github.com/defstudio/env-alert/compare/v1.2.3...v1.2.4
+
 ## v1.2.3 - 2026-10-07
 
 ### What's Changed
